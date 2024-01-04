@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "713161476028",
+    "project_id": "flutter-finance-tracker",
+    "storage_bucket": "flutter-finance-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713161476028:android:64356d89957faf27214db9",
+        "android_client_info": {
+          "package_name": "com.example.finance_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKFKrc_fK_TK1X_DN2AlkuQxZUfzrkn_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
