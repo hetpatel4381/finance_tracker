@@ -10,13 +10,10 @@ class GoalDetailsWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
-        height: 200,
-        child: ListView.builder(
+        height: 206,
+        child: ListView(
           scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          itemCount: financeProvider.getFinanceDetails().length,
-          itemBuilder: (context, index) {
-            final finance = financeProvider.getFinanceDetails()[index];
+          children: financeProvider.getFinanceDetails().map((finance) {
             return GestureDetector(
               onTap: () {
                 financeProvider.updateSelectedGoal(finance);
@@ -68,7 +65,7 @@ class GoalDetailsWidget extends StatelessWidget {
                 ),
               ),
             );
-          },
+          }).toList(),
         ),
       ),
     );

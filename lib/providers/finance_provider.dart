@@ -12,8 +12,11 @@ class FinanceProvider extends ChangeNotifier {
 
   void setFinanceValues(List<FinanceValues> financeValues) {
     _financeValues = financeValues;
-    notifyListeners();
+    Future.microtask(() {
+      notifyListeners();
+    });
   }
+
 
   void updateSelectedGoal(FinanceValues selectedGoal) {
     _selectedGoal = selectedGoal;
@@ -36,5 +39,12 @@ class FinanceProvider extends ChangeNotifier {
 
   List<FinanceValues> getFinanceDetails() {
     return _financeValues;
+  }
+
+  int getSelectedGoalIndex() {
+    if (_selectedGoal != null) {
+      return _financeValues.indexOf(_selectedGoal!);
+    }
+    return 0;
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-
 class CircularChartWidget extends StatelessWidget {
   const CircularChartWidget({
     Key? key,
@@ -13,11 +12,14 @@ class CircularChartWidget extends StatelessWidget {
 
   final TooltipBehavior tooltipBehavior;
 
+  String formatChartDataLabel(FinanceValues data) {
+    double percentage = (data.currentAmount / data.targetAmount) * 100;
+    return '${data.title}\n${percentage.toStringAsFixed(2)}%';
+  }
+
   @override
   Widget build(BuildContext context) {
     final financeProvider = Provider.of<FinanceProvider>(context);
-
-    // Use selectedGoal if available, otherwise use the first element
     FinanceValues selectedGoal =
         financeProvider.selectedGoal ?? financeProvider.financeValues.first;
 
@@ -37,12 +39,11 @@ class CircularChartWidget extends StatelessWidget {
       tooltipBehavior: tooltipBehavior,
       series: <CircularSeries>[
         RadialBarSeries<FinanceValues, String>(
-          dataSource: [selectedGoal], // Show only the selected goal
+          dataSource: [selectedGoal],
           cornerStyle: CornerStyle.bothCurve,
           maximumValue: 100,
           gap: '2%',
-          xValueMapper: (FinanceValues data, _) =>
-              '${data.title}\n${data.targetAmount.toString()}',
+          xValueMapper: (FinanceValues data, _) => formatChartDataLabel(data),
           yValueMapper: (FinanceValues data, _) =>
               (data.currentAmount / data.targetAmount) * 100,
           pointColorMapper: (FinanceValues data, _) => data.color,

@@ -1,3 +1,4 @@
+import 'package:finance_tracker/widgets/show_finance_updates.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -10,7 +11,7 @@ class FinanceValues {
   late String title;
   double currentAmount;
   double targetAmount;
-  late String expectedDate;
+  late DateTime expectedDate;
   Color color;
 
   FinanceValues(
@@ -23,13 +24,15 @@ class FinanceValues {
 }
 
 class HomeScreen extends StatelessWidget {
-  // Declare staticFinanceValues as a member variable
   final List<FinanceValues> staticFinanceValues = [
-    FinanceValues('Dream Home', 3500000, 5200000, '2026-01-01', Colors.blue),
-    FinanceValues('Dream Car', 4700000, 15000000, '2027-02-01', Colors.green),
+    FinanceValues('Dream Home', 3500000, 5200000, DateTime.parse('2026-01-01'),
+        Colors.blue),
+    FinanceValues('Dream Car', 4700000, 15000000, DateTime.parse('2027-02-01'),
+        Colors.blue),
+    FinanceValues('Invested Amount', 1300000, 2000000,
+        DateTime.parse('2029-03-01'), Colors.blue),
     FinanceValues(
-        'Invested Amount', 1300000, 2000000, '2029-03-01', Colors.red),
-    FinanceValues('FD', 1250000, 1500000, '2025-03-01', Colors.yellow),
+        'FD', 1250000, 1500000, DateTime.parse('2025-03-01'), Colors.blue),
   ];
 
   @override
@@ -78,6 +81,12 @@ class HomeScreen extends StatelessWidget {
                     tooltipBehavior: TooltipBehavior(enable: true),
                   ),
                 ),
+              ShowFinanceUpdates(
+                targetAmount: financeProvider.selectedGoal?.targetAmount ?? 0,
+                currentSavings:
+                    financeProvider.selectedGoal?.currentAmount ?? 0,
+                expectedDate: financeProvider.selectedGoal?.expectedDate ?? DateTime.now(),
+              ),
               const SizedBox(height: 20),
               GoalDetailsWidget(),
               const SizedBox(height: 20),
@@ -158,16 +167,9 @@ class HomeScreen extends StatelessWidget {
                       titleController.text,
                       double.parse(currentSavingsController.text),
                       double.parse(targetAmountController.text),
-                      "${selectedDate.toLocal()}".split('')[0],
+                      selectedDate,
                       Colors.blue,
                     );
-
-                    // Update the static list for demonstration
-                    staticFinanceValues.add(newData);
-
-                    // Update the dynamic list in the FinanceProvider
-                    Provider.of<FinanceProvider>(context, listen: false)
-                        .addFinanceValue(newData);
 
                     // Update contributionHistory
                     Provider.of<FinanceProvider>(context, listen: false)
@@ -180,7 +182,7 @@ class HomeScreen extends StatelessWidget {
                     Provider.of<FinanceProvider>(context, listen: false)
                         .updateSelectedGoal(newData);
 
-                    Navigator.pop(context);
+                    Navigator.of(context).pop();
                   }
                 },
                 child: const Text('Submit'),
